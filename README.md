@@ -11,6 +11,9 @@ Diploma (A.Raskatov)
 ```
 Ссылка на описание проекта с UML диаграммой
 https://docs.google.com/document/d/1LTEQDFSQcmaTMZXY0eXR8f49RRmR3xuFvHmMJjBbV8s/pub
+
+Ссылка на рабочий пример
+http://netology.tw1.su/dip/
 ```
 
 В данном проекте реализована концепция MVC, разделяющая управляющую логику сайта и его визуальную часть.

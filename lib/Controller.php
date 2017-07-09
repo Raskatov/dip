@@ -17,7 +17,8 @@ class Controller {
     }
 
     public function redirect($to = null, array $params = []) {
-        $url = '/index.php';
+        $config = App::getConfig();
+        $url = $config['rootPath'] . 'index.php';
         if (!empty($to)) {
             $params = array_merge(['r' => $to], $params);
         }

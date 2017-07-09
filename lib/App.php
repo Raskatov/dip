@@ -57,9 +57,8 @@ class App
 
     public static function createUrl($route = null, array $params = [])
     {
-        // $params = ['a' => 1, 'b' => 2];
-        // index.php?a=1&b=2
-        $url = 'index.php';
+        $config = self::getConfig();
+        $url = $config['rootPath'] . 'index.php';
         if (!empty($route)) {
             // Помимо переданных параметров, мы еще должны добавить параметр r, например: r=site/create
 

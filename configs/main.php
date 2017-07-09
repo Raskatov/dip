@@ -5,4 +5,5 @@ return [
         'username' => 'root',
         'password' => '',
     ],
+    'rootPath' => '/dip/',
 ];
