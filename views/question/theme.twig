@@ -1,0 +1,82 @@
+{% extends "layouts/main.twig" %}
+
+{% block content %}
+<h1>Вопросы в теме "{{ theme['name'] }}</h1>
+<br />
+<table class="table-bordered">
+    <tr>
+        <th>Вопрос</th>
+        <th>Дата создания</th>
+        <th>Ответ</th>
+        <th>Добавить (изменить) ответ с публикацией или скрытием</th>
+        <th>Статус</th>
+        <th>Удаление вопроса</th>
+        <th>Скрытие/публикация вопроса</th>
+        <th>Редактирование автора</th>
+        <th>Редактирование текста вопроса</th>
+        <th>Переместить в тему</th>
+    </tr>
+    {% for questionInTheme in questions %}
+    <tr>
+        <td>{{ questionInTheme['question'] }}</td>
+        <td>{{ questionInTheme['date'] }}</td>
+        <td>{{ questionInTheme['answer'] }}</td>
+        <td>
+            <form action="{{ get_url('question/updateAnswer') }}" method="POST">
+                <textarea name="Data[answer]" placeholder="Введите текст ответа">{{ questionInTheme['answer'] }}</textarea>
+                <input type='hidden' name="Data[theme_id]" value="{{ questionInTheme['theme_id'] }}" />
+                <input type='hidden' name="Data[id]" value="{{ questionInTheme['id'] }}" />
+                <button type="submit" name="Data[publishButton]">Опубликовать ответ</button><br />
+                <button type="submit" name="Data[saveButton]">Сохранить и скрыть ответ</button>
+            </form>
+        </td>
+        <td>
+            {% if questionInTheme['answer'] is null or questionInTheme['answer'] is empty %}
+                Ожидает ответа
+            {% else %}
+                {{ questionInTheme['status'] }}
+            {% endif %}
+        </td>
+        <td><a href="{{ get_url('question/deleteQuestionInTheme', { id : questionInTheme['id'], theme_id : questionInTheme['theme_id'] }) }}">Удалить вопрос</a></td>
+        <td>
+            {% if questionInTheme['answer'] is null or questionInTheme['answer'] is empty %}
+                Сначала добавьте ответ
+            {% else %}
+                <a href="{{ get_url('question/updateStatus', { "Data[id]" : questionInTheme['id'], "Data[theme_id]" : questionInTheme['theme_id'], "Data[status]" : questionInTheme['status'] }) }}">Скрыть/опубликовать</a>
+            {% endif %}
+        </td>
+        <td>
+            <label>Автор:{{ questionInTheme['author'] }}</label>
+            <form action="{{ get_url('question/updateAuthor', { id : get_ParamId() }) }}" method="post">
+                <input name="Data[author]" placeholder="Введите нового автора"><br />
+                <input type='hidden' name="Data[id]" value="{{ questionInTheme['id'] }}" />
+                <button>Изменить автора</button>
+            </form>
+        </td>
+        <td>
+            <form action="{{ get_url('question/updateInTheme') }}" method="POST">
+                <textarea name="Data[question]" title="">{{ questionInTheme['question'] }}</textarea><br />
+                <input type='hidden' name="Data[id]" value="{{ questionInTheme['id'] }}" />
+                <input type='hidden' name="Data[theme_id]" value="{{ questionInTheme['theme_id'] }}" />
+                <button type="submit">Изменить вопрос</button>
+            </form>
+        </td>
+        <td>
+            <form action="{{ get_url('question/move', { id : get_ParamId() }) }}" method="post">
+                <input type="hidden" name="Data[id]"  value="{{ questionInTheme['id'] }}">
+                <select name="Data[theme_id]">
+                    {% for id, name in themeList %}
+                        <option value="{{ id }}">
+                            {{ name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button>Переместить</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<br />
+<br />
+{% endblock %}
